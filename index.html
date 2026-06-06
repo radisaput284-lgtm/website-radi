@@ -3,207 +3,179 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz From Radi - Secure Edition</title>
+    <title>Quiz From Radi</title>
     <style>
-        :root { 
-            --bg: #14141f; 
-            --card: #1f1f2e; 
-            --text: #e2e8f0; 
-            --accent: #818cf8; 
-            --success: #10b981;
-            --danger: #ef4444;
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #121214;
+            color: #ffffff;
+            text-align: center;
+            padding: 20px;
+            margin: 0;
         }
-        body { background: var(--bg); color: var(--text); font-family: sans-serif; text-align: center; padding: 20px; margin: 0; user-select: none; -webkit-user-select: none; }
-        .wadah { background: var(--card); max-width: 550px; margin: 20px auto; padding: 25px; border-radius: 15px; border: 1px solid #434366; box-shadow: 0 10px 25px rgba(0,0,0,0.4); box-sizing: border-box; }
-        .btn { display: block; width: 100%; padding: 14px; margin: 10px 0; background: #2d2d44; color: white; border: 1px solid #434366; border-radius: 8px; cursor: pointer; font-size: 16px; text-align: left; padding-left: 20px; transition: 0.2s; box-sizing: border-box; }
-        .btn:hover { background-color: #434366; }
-        .btn-center { text-align: center; padding-left: 0; background: var(--accent); font-weight: bold; }
-        .btn-center:hover { background: #6366f1; }
-        
-        .tabel-wrapper { margin-top: 15px; overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 14px; }
-        th, td { padding: 10px; border: 1px solid #434366; text-align: center; }
-        th { background-color: #2d2d44; color: var(--accent); }
-        tr:nth-child(even) { background-color: #252538; }
-        
-        #stopwatch { font-size: 22px; color: #f59e0b; margin-bottom: 10px; font-weight: bold; }
-        #progres { font-size: 15px; color: var(--success); margin-bottom: 10px; font-weight: bold; }
-        .input-nama { display: block; width: 100%; padding: 15px; margin: 15px 0; border-radius: 8px; border: 1px solid #434366; background: #14141f; color: white; font-size: 16px; text-align: center; box-sizing: border-box; }
-        
-        .btn-dev { background: #3b4252; color: #d8dee9; font-size: 12px; padding: 8px; margin-top: 25px; border: 1px dashed #4c566a; width: auto; display: inline-block; cursor: pointer; opacity: 0.4; border-radius: 5px; }
-        .btn-dev:hover { opacity: 1; background: var(--danger); color: white; border-style: solid; }
-        
-        h2 { color: var(--accent); margin-top: 5px; }
-        .sub-judul { color: #a6adc8; font-size: 14px; margin-bottom: 20px; }
-        .opsi-container { margin-top: 20px; }
+        .wadah {
+            background-color: #1a1a1e;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 500px;
+            margin: 50px auto;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+        }
+        h2 { color: #f39c12; margin-bottom: 10px; }
+        .sub-judul { color: #aaa; font-size: 14px; margin-bottom: 20px; }
+        input[type="text"] {
+            width: 80%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 2px solid #333;
+            border-radius: 8px;
+            background-color: #222;
+            color: #fff;
+            outline: none;
+        }
+        input[type="text"]:focus { border-color: #f39c12; }
+        .btn {
+            background-color: #f39c12;
+            color: #fff;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 10px;
+            transition: 0.3s;
+        }
+        .btn:hover { background-color: #e67e22; }
+        .btn-center { width: auto; min-width: 150px; }
+        #box-kuis { display: none; }
+        #pertanyaan { font-size: 18px; margin-bottom: 20px; font-weight: bold; }
     </style>
 </head>
-<body oncontextmenu="return false;"> <div class="wadah" id="layar-nama">
-    <h2>🎮 Quiz From Radi</h2>
-    <p class="sub-judul">Platform Kuis Kompetitif & Proteksi Terenkripsi</p>
-    <input type="text" id="nama" placeholder="Masukkan Nama Unik Kamu..." class="input-nama" autocomplete="off">
-    <button class="btn btn-center" onclick="lanjutMenuUtama()">Lanjut Pilih Kuis</button>
-</div>
+<body oncontextmenu="return false;">
 
-<div class="wadah" id="menu-utama" style="display:none;">
-    <h2>Pilih Kategori Utama</h2>
-    <p class="sub-judul">Silakan tentukan jenis bidang kuis Anda</p>
-    <button class="btn" onclick="pilihMenu('menu-game')">1. Tentang Game Terpopuler</button>
-    <button class="btn" onclick="pilihMenu('menu-pelajaran')">2. Tentang Pelajaran Umum Sekolah</button>
-</div>
-
-<div class="wadah" id="menu-game" style="display:none;">
-    <h2>Kategori Game</h2>
-    <p class="sub-judul">Pilih game yang ingin kamu taklukkan</p>
-    <button class="btn" onclick="siapkanKuis('game_minecraft')">A. Minecraft</button>
-    <button class="btn" onclick="siapkanKuis('game_ff')">B. Free Fire</button>
-    <button class="btn" onclick="siapkanKuis('game_mlbb')">C. Mobile Legends Bang Bang</button>
-    <button class="btn" onclick="siapkanKuis('game_pubg')">D. PUBG Mobile</button>
-    <button class="btn btn-center" style="background:#4c566a;" onclick="pilihMenu('menu-utama')">⬅️ Kembali</button>
-</div>
-
-<div class="wadah" id="menu-pelajaran" style="display:none;">
-    <h2>Kategori Pelajaran Umum</h2>
-    <p class="sub-judul">Uji pemahaman materi akademis sekolah kamu</p>
-    <button class="btn" onclick="pilihMenu('menu-agama')">A. Pendidikan Agama</button>
-    <button class="btn" onclick="siapkanKuis('pel_ppkn')">B. PPKN</button>
-    <button class="btn" onclick="siapkanKuis('pel_indo')">C. Bahasa Indonesia</button>
-    <button class="btn" onclick="siapkanKuis('pel_mtk')">D. Matematika</button>
-    <button class="btn" onclick="siapkanKuis('pel_inggris')">E. Bahasa Inggris</button>
-    <button class="btn" onclick="siapkanKuis('pel_sejarah')">F. Sejarah</button>
-    <button class="btn" onclick="siapkanKuis('pel_pjok')">G. PJOK</button>
-    <button class="btn" onclick="siapkanKuis('pel_seni')">H. Seni Budaya</button>
-    <button class="btn btn-center" style="background:#4c566a;" onclick="pilihMenu('menu-utama')">⬅️ Kembali</button>
-</div>
-
-<div class="wadah" id="menu-agama" style="display:none;">
-    <h2>Pilihan Agama</h2>
-    <p class="sub-judul">Pilih sesuai keyakinan untuk memulai kuis spesifik</p>
-    <button class="btn" onclick="siapkanKuis('agama_hindu')">1. Hindu</button>
-    <button class="btn" onclick="siapkanKuis('agama_islam')">2. Islam</button>
-    <button class="btn" onclick="siapkanKuis('agama_protestan')">3. Kristen Protestan</button>
-    <button class="btn" onclick="siapkanKuis('agama_katolik')">4. Kristen Katolik</button>
-    <button class="btn" onclick="siapkanKuis('agama_buddha')">5. Buddha</button>
-    <button class="btn" onclick="siapkanKuis('agama_konghucu')">6. Konghucu</button>
-    <button class="btn btn-center" style="background:#4c566a;" onclick="pilihMenu('menu-pelajaran')">⬅️ Kembali</button>
-</div>
-
-<div class="wadah" id="layar-game" style="display:none;">
-    <div id="progres">Kategori: - | Soal: 0/20</div>
-    <div id="stopwatch">⏱️ Total Waktu: 0s</div>
-    <h3 id="soal-teks" style="color:#818cf8; font-size:19px; line-height: 1.5; margin-bottom:20px; text-align: left;"></h3>
-    <div id="opsi" class="opsi-container"></div>
-</div>
-
-<div class="wadah" id="layar-peringkat" style="display:none;">
-    <h2 id="judul-peringkat">🏆 Papan Peringkat</h2>
-    <div id="rekap-skor-pemain" style="background: #252538; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #434366;"></div>
-    
-    <p style="font-weight: bold; text-align: left; margin-bottom: 5px; color: var(--accent);">TOP PLAYERS DI KATEGORI INI:</p>
-    <div class="tabel-wrapper">
-        <table>
-            <thead>
-                <tr>
-                    <th>Rank</th>
-                    <th>Nama</th>
-                    <th>Poin</th>
-                    <th>Waktu Jawab</th>
-                </tr>
-            </thead>
-            <tbody id="list-peringkat"></tbody>
-        </table>
+    <!-- HALAMAN 1: INPUT NAMA -->
+    <div id="halaman-nama" class="wadah">
+        <h2>🎮 Quiz From Radi</h2>
+        <p class="sub-judul">Platform Kuis Kompetitif</p>
+        <input type="text" id="nama" placeholder="Masukkan nama kamu...">
+        <button class="btn btn-center" onclick="lanjut()">Lanjut</button>
     </div>
-    
-    <button class="btn btn-center" style="background:var(--success); margin-top:20px;" onclick="location.reload()">Main Lagi / Ganti User</button>
-    <div style="text-align: center;">
-        <div class="btn-dev" onclick="resetLeaderboardSpesifik()">🛠️ Dev Mode: Kosongkan Leaderboard Kategori Ini</div>
-    </div>
-</div>
 
-<script>
-    // Seluruh isi database kuis 20 soal per kategori tetap dipertahankan secara utuh
-    const databaseKuis = {
-        game_minecraft: [
-            {q: "Di dimensi manakah naga 'Ender Dragon' tinggal?", a: ["The Nether", "The End", "Overworld", "Aether"], b: 1},
-            {q: "Item apa untuk menjinakkan Serigala agar menjadi peliharaan setia?", a: ["Daging Mentah", "Ikan", "Tulang", "Gandum"], b: 2},
-            {q: "Monster apa yang suka mengendap-endap, meledak, dan takut kepada Kucing?", a: ["Zombie", "Skeleton", "Creeper", "Enderman"], b: 2},
-            {q: "Jenis Pickaxe minimal apa yang harus digunakan untuk mengambil bijih Diamond?", a: ["Iron Pickaxe", "Stone Pickaxe", "Wooden Pickaxe", "Golden Pickaxe"], b: 0},
-            {q: "Blok apa yang menjadi bahan dasar utama pembuatan portal menuju Nether?", a: ["Bedrock", "Crying Obsidian", "Obsidian", "Blackstone"], b: 2},
-            {q: "Makanan kegemaran apa yang sangat disukai oleh Panda di biome Bamboo Jungle?", a: ["Apel", "Kue", "Bambu", "Semangka"], b: 2},
-            {q: "Berapa jumlah mata Ender (Eye of Ender) maksimal yang bisa terpasang otomatis di portal?", a: ["12 Mata", "10 Mata", "0 Mata", "5 Mata"], b: 0},
-            {q: "Apa nama piringan hitam (Music Disc) kuno yang suaranya rusak sangat menyeramkan?", a: ["Disc 11", "Disc Mellohi", "Disc Pigstep", "Disc Stal"], b: 0},
-            {q: "Monster tinggi pemindah blok yang akan marah jika ditatap langsung matanya adalah?", a: ["Wither Skeleton", "Enderman", "Phantom", "Witch"], b: 1},
-            {q: "Blok apa yang tak bisa dihancurkan sama sekali jika di mode Survival?", a: ["Obsidian", "Netherite Block", "Bedrock", "Ancient Debris"], b: 2},
-            {q: "Helm berbahan apa yang dapat memberikan efek bernapas lama di dalam air?", a: ["Turtle Shell", "Diamond Helmet", "Netherite Helmet", "Chainmail Helmet"], b: 0},
-            {q: "Apa kegunaan utama dari item mistis 'Totem of Undying'?", a: ["Lompat tinggi", "Menyelamatkan nyawa dari kematian", "Satu pukulan mati", "Mencari desa villager"], b: 1},
-            {q: "Ramuan (Potion) jenis apa yang digunakan untuk melihat dengan jelas dalam kegerlap kegelapan?", a: ["Invisibility", "Water Breathing", "Night Vision", "Swiftness"], b: 2},
-            {q: "Bahan kepala monster apa yang dibutuhkan untuk memanggil bos besar Wither?", a: ["Wither Skeleton Skull", "Ender Dragon Head", "Zombie Head", "Creeper Head"], b: 0},
-            {q: "Jika blok Tembaga (Copper) dibiarkan teroksidasi oleh cuaca, warnanya berubah menjadi?", a: ["Merah tua", "Hitam legam", "Hijau kebiruan", "Emas berkilau"], b: 2},
-            {q: "Di Minecraft Java Edition, tombol keyboard apa untuk memunculkan koordinat posisi?", a: ["F1", "F3", "F5", "F11"], b: 1},
-            {q: "Profesi Villager apa yang menawarkan penukaran Emerald dengan item Ender Pearl?", a: ["Fletcher", "Librarian", "Cleric", "Farmer"], b: 2},
-            {q: "Apa yang terjadi jika seekor Babi (Pig) biasa tersambar oleh sambaran petir alami?", a: ["Mati hangus", "Berubah menjadi Zombie Pigman", "Menjadi babi raksasa", "Meledak instan"], b: 1},
-            {q: "Jenis ikan apa yang digunakan untuk menjinakkan Ocelot liar di hutan?", a: ["Raw Cod / Salmon", "Pufferfish", "Cooked Cod", "Tropical Fish"], b: 0},
-            {q: "Efek buruk (Status Effect) apa yang didapat pemain setelah berhasil membunuh Raid Captain?", a: ["Wither", "Bad Omen", "Poison", "Hunger"], b: 1}
-        ],
-        game_ff: [
-            {q: "Siapa nama karakter legendaris Free Fire yang terinspirasi dari DJ terkenal dunia?", a: ["Chrono", "Hayato", "Alok", "K"], b: 2},
-            {q: "Senjata berjenis AWM termasuk ke dalam golongan rumpun senjata?", a: ["SMG", "Sniper Rifle", "Shotgun", "Pistol"], b: 1},
-            {q: "Apa nama map bertema pegunungan salju yang ada di Free Fire?", a: ["Bermuda", "Purgatory", "Kalahari", "Alpine"], b: 3},
-            {q: "Item taktis apa yang dilemparkan untuk membuat dinding pelindung instan?", a: ["Gloo Wall", "Granat", "Medkit", "Flashbang"], b: 0},
-            {q: "Mata uang utama dalam game Free Fire untuk membeli item skin premium adalah?", a: ["Gold", "Diamond", "Token", "Fragment"], b: 1},
-            {q: "Apa nama kendaraan roda empat tercepat yang bisa dikendarai di game Free Fire?", a: ["Jeep", "Monster Truck", "Sports Car", "Tuk-Tuk"], b: 2},
-            {q: "Berapa jumlah maksimal tim yang harus tersisa di akhir pertandingan untuk meraih Booyah?", a: ["3 Tim", "2 Tim", "1 Tim", "4 Tim"], b: 2},
-            {q: "Pet berbentuk anjing berikut yang memiliki kemampuan mendeteksi keberadaan jamur adalah?", a: ["Shiba", "Ottero", "Falco", "Rockie"], b: 0},
-            {q: "Karakter wanita sekolah mana yang memiliki kemampuan pasif meningkatkan kecepatan berlari?", a: ["Kelly", "Moco", "Laura", "Olivia"], b: 0},
-            {q: "Senjata Shotgun yang hanya diisi 2 peluru namun memiliki daya hancur damage sangat besar bernama?", a: ["M1014", "SPAS12", "M1887", "MAG-7"], b: 2},
-            {q: "Apa nama item medis darurat untuk menambah HP pemain sembari tetap berjalan?", a: ["Medkit", "Inhaler", "Repair Kit", "Treatment Gun"], b: 1},
-            {q: "Rank kompetitif tertinggi tepat di atas Grandmaster pada game Free Fire saat ini adalah?", a: ["Heroic", "Master", "Challenger", "Grandmaster II"], b: 1},
-            {q: "Apa istilah sistem pesawat kargo menjatuhkan kotak suplai berisi senjata langka di map?", a: ["Airdrop", "UAV", "Airship", "Vending Machine"], b: 0},
-            {q: "Senjata berjenis SMG berkecepatan tinggi yang terkenal stabil dengan akurasi mantap adalah?", a: ["MP40", "UMP", "Thompson", "P90"], b: 1},
-            {q: "Karakter Samurai bernama Hayato memiliki kemampuan khusus yang bernama?", a: ["Bushido", "Time Turner", "Drop the Beat", "Gluttony"], b: 0},
-            {q: "Berapa kapasitas maksimal muatan pemain dalam satu ruangan Custom Room Battle Royale?", a: ["48 Pemain", "50 Pemain", "20 Pemain", "100 Pemain"], b: 0},
-            {q: "Senjata jarak dekat berbentuk bulat yang bisa menangkis peluru musuh dari arah belakang adalah?", a: ["Parang", "Katana", "Panci", "Scythe"], b: 2},
-            {q: "Di lokasi daerah mana kita bisa menemukan jembatan gantung besar ikonik di map Bermuda?", a: ["Clock Tower", "Riverside", "Shipyard", "Launchpad"], b: 1},
-            {q: "Alat mekanis stasioner apa yang dipakai untuk meluncur melintasi udara secara cepat?", a: ["Launchpad / Zipline", "Ban Mobil", "Glider", "Portal Warp"], b: 0},
-            {q: "Istilah mutlak saat kamu berhasil memenangkan pertempuran di Free Fire disebut?", a: ["Chicken Dinner", "Booyah!", "Victory", "Wiped Out"], b: 1}
-        ],
-        game_mlbb: [
-            {q: "Apa nama item defense MLBB yang punya kemampuan membangkitkan kembali hero setelah mati?", a: ["Immortality", "Athena Shield", "Rose Gold", "Brute Force"], b: 0},
-            {q: "Siapa nama Hero Assassin lincah yang bertarung menggunakan mekanik kabel baja?", a: ["Ling", "Fanny", "Gusion", "Lancelot"], b: 1},
-            {q: "Monster hutan purba terbesar di MLBB yang memberikan buff serang evolusi bagi tim bernama?", a: ["Turtle", "Lord", "Blue Buff", "Red Buff"], b: 1},
-            {q: "Jalur (Lane) yang idealnya wajib ditempati oleh hero berjenis Marksman (MM) adalah?", a: ["Exp Lane", "Mid Lane", "Gold Lane", "Jungle"], b: 2},
-            {q: "Berapa jumlah total pemain dalam satu arena pertandingan Klasik atau Rank di MLBB?", a: ["10 Pemain", "5 Pemain", "6 Pemain", "8 Pemain"], b: 0},
-            {q: "Apa nama battle spell yang digunakan untuk melakukan dash instan jarak dekat?", a: ["Retribution", "Flicker", "Purify", "Flameshot"], b: 1},
-            {q: "Sebutan/suara narator bagi pemain yang berhasil membunuh 5 hero musuh tanpa putus adalah?", a: ["Maniac", "Savage", "Wiped Out", "Mega Kill"], b: 1},
-            {q: "Siapa hero Tank klasik yang memiliki skill ultimate menarik musuh dengan rantai kaitnya?", a: ["Tigreal", "Franco", "Akai", "Khufra"], b: 1},
-            {q: "Item Magic bertipe tongkat apa yang wajib dibeli untuk menembus kebal Magic Defense tebal?", a: ["Divine Glaive", "Genius Wand", "Holy Crystal", "Blood Wings"], b: 0},
-            {q: "Apakah nama objek markas pusat tersuci utama yang wajib dihancurkan untuk memenangkan game?", a: ["Turret", "Base Crystal", "Inner Turret", "Sanctuary"], b: 1},
-            {q: "Hero Mage berparas cantik apa yang bertarung menggunakan keahlian payung magis?", a: ["Kagura", "Odette", "Lunox", "Eudora"], b: 0},
-            {q: "Level maksimal perkembangan level hero di dalam satu match game MLBB adalah?", a: ["Level 12", "Level 15", "Level 20", "Level 10"], b: 1},
-            {q: "Apa fungsi utama proteksi dari item magis ungu bernama 'Athena Shield'?", a: ["Menahan Physical Burst", "Menahan Magic Burst Damage", "Menambah regen darah", "Meningkatkan lari"], b: 1},
-            {q: "Siapa nama perusahaan pengembang pencipta utama game Mobile Legends?", a: ["Garena", "Moonton", "Tencent", "Epic Games"], b: 1},
-            {q: "Pangkat/Rank apa yang posisinya berada tepat di bawah tingkatan Rank Mythic?", a: ["Epic", "Legend", "Grandmaster", "Mythical Glory"], b: 1},
-            {q: "Apa sebutan baku untuk peran hero yang berfokus membersihkan monster hutan?", a: ["Roamer", "Midlaner", "Jungler", "Goldlaner"], b: 2},
-            {q: "Hero Fighter perkasa asal Malaysia yang mengandalkan seni tinju beruntun bernama?", a: ["Chou", "Paquito", "Badang", "Aldous"], b: 2},
-            {q: "Item Physical pedang hijau apa yang memberikan pasif peluang damage critical terbesar?", a: ["Berserker's Fury", "Blade of Despair", "Malefic Roar", "Endless Battle"], b: 0},
-            {q: "Setiap berapa menit sekali objek netral monster 'Turtle' akan muncul kembali setelah dieliminasi?", a: ["2 Menit", "3 Menit", "5 Menit", "1 Menit"], b: 0},
-            {q: "Efek Crowd Control (CC) mutlak tertinggi yang sama sekali tidak bisa dibatalkan oleh spell Purify adalah?", a: ["Stun", "Slow", "Suppress", "Airborne"], b: 2}
-        ],
-        game_pubg: [
-            {q: "Map berukuran luas dengan tema padang pasir gersang di PUBG Mobile bernama?", a: ["Erangel", "Miramar", "Sanhok", "Vikendi"], b: 1},
-            {q: "Apa nama wilayah kota besar di map Erangel yang menjadi pusat pertempuran sengit?", a: ["Pochinki", "Rozhok", "Yasnaya Polyana", "Gatka"], b: 0},
-            {q: "Senjata senapan serbu rifle yang menggunakan amunisi berkaliber peluru 7.62mm (Cokelat) adalah?", a: ["M416", "AKM", "SCAR-L", "M16A4"], b: 1},
-            {q: "Berapa kapasitas total maksimal jumlah pemain dalam satu lobby pertandingan mode Classic?", a: ["50 Pemain", "60 Pemain", "100 Pemain", "80 Pemain"], b: 2},
-            {q: "Apa tingkatan level tertinggi untuk item proteksi Rompi Vest dan Helm di PUBG Mobile?", a: ["Level 1", "Level 2", "Level 3", "Level 4"], b: 2},
-            {q: "Kalimat kemenangan legendaris saat skuad kamu berhasil bertahan menjadi nomor satu adalah?", a: ["Booyah!", "Winner Winner Chicken Dinner!", "Victory Royale", "Epic Win!"], b: 1},
-            {q: "Jenis item medis kotak besar apa yang bisa langsung memulihkan HP pemain penuh 100%?", a: ["Bandage", "First Aid Kit", "Med Kit", "Energy Drink"], b: 2},
-            {q: "Senjata Sniper tipe Bolt-Action terkuat yang hanya bisa didapatkan di peti Airdrop adalah?", a: ["Kar98k", "M24", "AWM", "Mini14"], b: 2},
-            {q: "Apa fungsi fungsi utama dari komponen attachment moncong senjata bernama 'Suppressor'?", a: ["Meredam kebisingan suara tembakan", "Mengurangi horizontal recoil", "Menambah slot isi peluru", "Mempercepat durasi reload"], b: 0},
-            {q: "Kendaraan roda tiga eksentrik yang hanya dapat dijumpai khusus di map hutan Sanhok bernama?", a: ["Buggy", "Dacia", "Tukshai", "UAZ"], b: 2},
-            {q: "Senjata api jenis submachine gun (SMG) mana yang punya laju tembakan (fire rate) tercepat?", a: ["UZI", "UMP45", "Vector", "Tommy Gun"], b: 0},
-            {q: "Apa nama lingkaran pembatas energi mematikan berwarna biru yang terus mengecil?", a: ["Red Zone", "Blue Zone", "Safe Zone", "Play Zone"], b: 1},
-            {q: "Item melee berwujud Panci memiliki keunikan pertahanan luar biasa yaitu?", a: ["Bisa meledak", "Kebal peluru dari serangan belakang", "Mampu terbang", "Memulihkan armor"], b: 1},
-            {q: "Komponen Scope keker jarak jauh maksimal yang sanggup disematkan pada senjata Sniper adalah?", a: ["Scope 4x", "Scope 6x", "Scope 8x", "Scope 3x"], b: 2},
-            {q: "Apakah nama map medan perang klasik bersalju putih tebal di PUBG Mobile?", a: ["Vikendi", "Livik", "Karakin", "Nusa"], b: 0},
-            {q: "Item suntikan booster apa yang dapat langsung mengisi penuh bar energi lari secara instan?", a: ["Adrenaline Syringe", "Energy Drink", "Painkiller", "Bandage Box"], b: 0},
-           
+    <!-- HALAMAN 2: PILIH KATEGORI UTAMA -->
+    <div class="wadah" id="menu-utama" style="display: none;">
+        <h2>Pilih Kategori Utama</h2>
+        <p class="sub-judul">Silakan tentukan jenis kuis yang ingin kamu mainkan</p>
+        <button class="btn" onclick="pilihMenu('menu-game')">Kategori Game</button>
+        <button class="btn" onclick="alert('Kategori Pendidikan belum tersedia!')">Kategori Pendidikan</button>
+    </div>
+
+    <!-- HALAMAN 3: PILIH GAME -->
+    <div class="wadah" id="menu-game" style="display: none;">
+        <h2>Kategori Game</h2>
+        <p class="sub-judul">Pilih game yang ingin kamu uji pengetahuannya</p>
+        <button class="btn" onclick="siapkanKuis('pubg')">PUBG Mobile</button>
+        <button class="btn" onclick="alert('Kuis MLBB sedang dikembangkan!')">Mobile Legends</button>
+        <button class="btn" onclick="alert('Kuis Free Fire sedang dikembangkan!')">Free Fire</button>
+    </div>
+
+    <!-- HALAMAN 4: AREA KUIS BERJALAN -->
+    <div class="wadah" id="box-kuis">
+        <h2 id="judul-kuis">Kuis Sedang Berjalan</h2>
+        <div id="pertanyaan"></div>
+        <div id="opsi-jawaban"></div>
+    </div>
+
+    <!-- 🛠️ LOGIKA JAVASCRIPT (TERMASUK SOAL-SOAL MILIK RADI) -->
+    <script>
+        // Daftar soal PUBG buatan Radi yang diselamatkan dari gambar 313621.png
+        const soalPUBG = [
+            {q: "Apa nama wilayah kota besar di map Erangel yang terkenal dengan apartemennya?", a: ["Pochinki", "Rozhok", "School", "Yasnaya Polyana"], c: 3},
+            {q: "Senjata senapan serbu rifle yang menggunakan peluru 7.62mm dan terkenal paling sakit adalah?", a: ["M416", "AKM", "SCAR-L", "M16A4"], c: 1},
+            {q: "Berapa kapasitas total maksimal jika tas level 3 digabungkan dengan rompi?", a: ["350", "400", "450", "500"], c: 1},
+            {q: "Apa tingkatan level tertinggi untuk Helm dan Vest di dalam game?", a: ["Level 2", "Level 3", "Level 4", "Level 5"], c: 1},
+            {q: "Kalimat kemenangan legendaris saat berhasil memenangkan pertandingan di PUBG adalah?", a: ["Booyah!", "Victory!", "Winner Winner Chicken Dinner!", "Savage!"], c: 2},
+            {q: "Jenis item medis kotak besar apa yang bisa memulihkan HP langsung menjadi 100%?", a: ["Med Kit", "First Aid Kit", "Bandage", "Adrenaline Syringe"], c: 0},
+            {q: "Senjata Sniper tipe Bolt-Action yang hanya bisa didapatkan dari Air Drop adalah?", a: ["Kar98k", "M24", "AWM", "Win94"], c: 2},
+            {q: "Apa fungsi utama dari komponen Kompensator (Compensator) pada senjata?", a: ["Mengurangi suara", "Menghilangkan percikan api", "Mengurangi recoil horizontal dan vertikal", "Menambah slot peluru"], c: 2},
+            {q: "Kendaraan roda tiga eksentrik yang ada di map Sanhok dinamakan?", a: ["Dacia", "UAZ", "Tukshai", "Buggy"], c: 2},
+            {q: "Senjata api jenis submachine gun (SMG) yang memiliki firing rate tercepat adalah?", a: ["UMP45", "Micro UZI", "Vector", "Tommy Gun"], c: 1},
+            {q: "Apa nama lingkaran pembatas energi biru yang terus mengecil seiring berjalannya waktu?", a: ["Safe Zone", "Blue Zone", "Red Zone", "Play Zone"], c: 1},
+            {q: "Item melee berwujud Panci memiliki keunikan luar biasa yaitu bisa?", a: ["Memantulkan peluru", "Berlari lebih cepat", "Menghancurkan kendaraan", "Mengisi darah"], c: 0},
+            {q: "Komponen Scope keker jarak jauh maksimal yang bisa dipasangkan pada senjata Assault Rifle (AR) adalah?", a: ["4x Scope", "6x Scope", "8x Scope", "15x Scope"], c: 1},
+            {q: "Apakah nama map medan perang klasik PUBG yang dipenuhi oleh hamparan gurun pasir?", a: ["Erangel", "Miramar", "Sanhok", "Vikendi"], c: 1},
+            {q: "Item suntikan booster apa yang langsung memberikan bar energi penuh sebesar 100%?", a: ["Painkiller", "Energy Drink", "Adrenaline Syringe", "Med Kit"], c: 2}
+        ];
+
+        let skor = 0;
+        let indeksSoalSekarang = 0;
+
+        // Fungsi berpindah dari halaman input nama ke Menu Utama
+        function lanjut() {
+            var namaUser = document.getElementById("nama").value;
+            if (namaUser.trim() === "") {
+                alert("Silakan masukkan nama kamu terlebih dahulu!");
+                return;
+            }
+            document.getElementById("halaman-nama").style.display = "none";
+            document.getElementById("menu-utama").style.display = "block";
+        }
+
+        // Fungsi memilih kategori utama
+        function pilihMenu(idMenu) {
+            document.getElementById("menu-utama").style.display = "none";
+            document.getElementById(idMenu).style.display = "block";
+        }
+
+        // Fungsi memulai kuis berdasarkan game yang dipilih
+        function siapkanKuis(kategori) {
+            if (kategori === 'pubg') {
+                document.getElementById("menu-game").style.display = "none";
+                document.getElementById("box-kuis").style.display = "block";
+                indeksSoalSekarang = 0;
+                skor = 0;
+                tampilkanSoal();
+            }
+        }
+
+        // Fungsi menampilkan soal satu per satu
+        function tampilkanSoal() {
+            if (indeksSoalSekarang < soalPUBG.length) {
+                let dataSoal = soalPUBG[indeksSoalSekarang];
+                document.getElementById("pertanyaan").innerText = (indeksSoalSekarang + 1) + ". " + dataSoal.q;
+                
+                let areaOpsi = document.getElementById("opsi-jawaban");
+                areaOpsi.innerHTML = ""; // Bersihkan pilihan sebelumnya
+                
+                // Membuat tombol untuk setiap pilihan jawaban
+                dataSoal.a.forEach((pilihan, indeks) => {
+                    let tombolOpsi = document.createElement("button");
+                    tombolOpsi.className = "btn";
+                    tombolOpsi.innerText = pilihan;
+                    tombolOpsi.onclick = function() { cekJawaban(indeks); };
+                    areaOpsi.appendChild(tombolOpsi);
+                });
+            } else {
+                // Kuis Selesai
+                document.getElementById("pertanyaan").innerText = "Kuis Selesai! 🎉";
+                var namaUser = document.getElementById("nama").value;
+                document.getElementById("opsi-jawaban").innerHTML = "<h3>Selamat " + namaUser + "!</h3><p>Skor Akhir Kamu: <b>" + skor + " / " + (soalPUBG.length * 10) + "</b></p><button class='btn' onclick='location.reload()'>Main Lagi</button>";
+            }
+        }
+
+        // Fungsi mengecek jawaban benar atau salah
+        function cekJawaban(indeksDipilih) {
+            let dataSoal = soalPUBG[indeksSoalSekarang];
+            if (indeksDipilih === dataSoal.c) {
+                alert("Benar! 🎉");
+                skor += 10;
+            } else {
+                alert("Salah! ❌ Jawaban yang benar adalah: " + dataSoal.a[dataSoal.c]);
+            }
+            indeksSoalSekarang++;
+            tampilkanSoal();
+        }
+    </script>
+</body>
+</html>
