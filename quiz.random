@@ -1,0 +1,59 @@
+import random
+
+soal = [
+    {
+        "soal": "Apa nama dimensi tempat Ender Dragon berada?",
+        "opsi": ["A. Nether", "B. End", "C. Overworld", "D. Cave"],
+        "jawaban": "B"
+    },
+    {
+        "soal": "Mob hijau yang meledak disebut?",
+        "opsi": ["A. Zombie", "B. Skeleton", "C. Creeper", "D. Spider"],
+        "jawaban": "C"
+    },
+    {
+        "soal": "Blok untuk membuat portal Nether?",
+        "opsi": ["A. Stone", "B. Obsidian", "C. Diamond", "D. Iron"],
+        "jawaban": "B"
+    },
+    {
+        "soal": "Item untuk terbang di Minecraft?",
+        "opsi": ["A. Elytra", "B. Shield", "C. Bow", "D. Trident"],
+        "jawaban": "A"
+    },
+    {
+        "soal": "Hewan penghasil wol?",
+        "opsi": ["A. Cow", "B. Pig", "C. Sheep", "D. Horse"],
+        "jawaban": "C"
+    }
+]
+
+random.shuffle(soal)
+
+skor = 0
+
+print("=" * 40)
+print("      QUIZ MINECRAFT")
+print("=" * 40)
+
+for nomor, s in enumerate(soal, start=1):
+    print(f"\nSoal {nomor}")
+    print(s["soal"])
+
+    for opsi in s["opsi"]:
+        print(opsi)
+
+    jawab = input("Jawaban (A/B/C/D): ").upper()
+
+    if jawab == s["jawaban"]:
+        print("✅ Benar!")
+        skor += 1
+    else:
+        print(f"❌ Salah! Jawaban yang benar: {s['jawaban']}")
+
+print("\n" + "=" * 40)
+print(f"Skor Akhir: {skor}/{len(soal)}")
+print("=" * 40)
+
+if skor == len(soal):
+    print("🏆 Selamat! Nilai sempurna!")
